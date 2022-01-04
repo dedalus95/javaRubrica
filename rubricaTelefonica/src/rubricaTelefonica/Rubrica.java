@@ -4,6 +4,7 @@ import java.util.Vector;
 
 
 
+
 public class Rubrica {
 	
 	
@@ -12,7 +13,7 @@ public class Rubrica {
 	
 	
 	public Rubrica() {
-		this.listaContatti = new Vector<SchedaContatto>(200);
+		this.listaContatti = new Vector<SchedaContatto>();
 	}
 	
 	
@@ -42,68 +43,71 @@ public class Rubrica {
 	 * Metodo che rimuove una scheda dalla rubrica.
 	 * @param contatto
 	 */
-
-	public void rimuoviScheda(SchedaContatto contatto) {
-		this.listaContatti.remove(contatto);
-	}
+	
 	
 
-    /**
-     * Metodo che ricerca una scheda in base al cognome inserito.
-     * Case insensitive.
-     * @param cognome
-     */
-	public void ricercaPerCognome(String cognome) {
-		listaContatti.forEach((scheda) -> {
-			if(cognome.toUpperCase().equals(scheda.getCognome().toUpperCase()))
-			{
-				this.showCard(scheda);
+	public int ricerca(String indirizzo, String cognome) {
+		for(int i = 0; i < listaContatti.size();i++) {
+			if(cognome != null) {
+				 if(listaContatti.get(i).getCognome().toUpperCase().equals(cognome.toUpperCase())) {
+					 return i;
+				 };
+			} else if(indirizzo != null) {
+				if(listaContatti.get(i).getIndirizzo().toUpperCase().equals(indirizzo.toUpperCase())) {
+					return i;
+				}
+					
 			}
-		});
+			
+		}
+		return -1;
 	}
 	
 	
-	/**
-	 * Metodo che ricerca una scheda in base all'indirizzo inserito.
-	 *Case insensitive.
-	 * @param indirizzo
-	 */
-	
-	public void ricercaPerIndirizzo(String indirizzo) {
-		listaContatti.forEach((scheda) -> {
-			if(indirizzo.toUpperCase().equals(scheda.getIndirizzo().toUpperCase()))
-			{
-				showCard(scheda);
-			} 
-		});
+
+	public void rimuoviScheda(int i) {
+		
+		if(i != -1) {
+		listaContatti.remove(i);
+		} else if (i == -1) {
+			System.out.println("Non trovato.");
+		}
 	}
 	
+
 	
-	/**
-	 * Metodo che stampa tutte le schede.
-	 */
-	
-	public void mostraTutteLeSchede() {
-		listaContatti.forEach((scheda) -> {
-			showCard(scheda);
-		});
+	public void templateScheda(int i) {
+		System.out.println(
+				listaContatti.get(i).getNome()
+				+ " " 
+				+ listaContatti.get(i).getCognome() 
+				+ " - "
+				+ listaContatti.get(i).getIndirizzo()
+				+ " - "
+				+ listaContatti.get(i).getTelefono());
 	}
-	
 	
 	/**
 	 * Metodo che fornisce il template per stampare le schede.
 	 * @param scheda
 	 */
 	
-	private void showCard(SchedaContatto scheda) {
-		System.out.println(
-				  scheda.getNome() 
-				+ " " 
-				+ scheda.getCognome() 
-				+ " - "
-				+ scheda.getIndirizzo()
-				+ " - "
-				+ scheda.getTelefono());
+	public void showCard(int i) {
+
+		switch(i) {
+		case -1:
+		System.out.println("Non trovato.");
+		break;
+		case -2:
+		for(int i1 = 0; i1 < listaContatti.size(); i1++) {
+			templateScheda(i1);
+		}
+		break;
+		default:
+		templateScheda(i);
+		break;
+		}
+		
 	}
 }
 
